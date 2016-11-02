@@ -19,9 +19,6 @@ public class FirstTests {
         students.add(new Student("Petr", "Poroshenko", "Kiev"));
         students.add(new Student("Yuriy", "Kuchevskiy", "Vinnitsa"));
         CsvParser parser = new CsvParser("src/main/resources/test.csv");
-       // System.out.println(students);
-       // System.out.println(parser.parseCsv());
-        //System.out.println(students.equals(parser.parseCsv()));
         assertTrue(students.equals(parser.parseCsv()));
     }
 }
