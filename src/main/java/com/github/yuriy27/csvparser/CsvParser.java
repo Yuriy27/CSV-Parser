@@ -46,4 +46,11 @@ public class CsvParser {
 
         return result;
     }
+
+    public List<Object> loadEntities(Class<?> clazz) {
+
+
+        return null;
+    }
+
 }
