@@ -1,5 +1,7 @@
 package com.github.yuriy27.csvparser;
 
+import com.github.yuriy27.csvparser.config.CsvConfiguration;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

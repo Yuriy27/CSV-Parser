@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Юра on 07.11.2016.
  */
-abstract class CsvConfigurationImpl implements CsvConfiguration{
+abstract class CsvConfigurationImpl implements CsvConfiguration {
 
     protected String separator = ",";
     protected List<CsvEntity> csvEntities;

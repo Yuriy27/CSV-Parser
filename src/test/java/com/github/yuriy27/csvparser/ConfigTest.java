@@ -20,9 +20,9 @@ public class ConfigTest {
 
     @Test
     public void testCsvEntityFromFileCsvConfiguration() {
-        FileCsvConfiguration config = new FileCsvConfiguration("src/main/resources/config.xml");
+        CsvConfiguration config = new FileCsvConfiguration("src/main/resources/config.xml");
         config.loadConfiguration();
-        System.out.println(config.getEntities().toString());
+        System.out.println(((FileCsvConfiguration) config).getEntities().toString());
     }
 
 }
