@@ -4,7 +4,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,6 +18,6 @@ public class FirstTests {
         students.add(new Student("Petr", "Poroshenko", "Kiev"));
         students.add(new Student("Yuriy", "Kuchevskiy", "Vinnitsa"));
         CsvParser parser = new CsvParser("src/main/resources/test.csv");
-        assertTrue(students.equals(parser.parseCsv()));
+        assertTrue(students.equals(parser.parse()));
     }
 }

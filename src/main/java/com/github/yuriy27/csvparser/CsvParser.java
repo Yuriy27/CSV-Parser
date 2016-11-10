@@ -27,7 +27,7 @@ public class CsvParser {
         this.separator = separator;
     }
 
-    public List<Student> parseCsv() {
+    public List<Student> parse() {
         List<Student> result = new ArrayList<>();
         try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
