@@ -1,7 +1,6 @@
 package com.github.yuriy27.csvparser;
 
-import com.github.yuriy27.csvparser.config.CsvConfiguration;
-import com.github.yuriy27.csvparser.config.FileCsvConfiguration;
+import com.github.yuriy27.csvparser.config.CsvConfigurationImpl;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,18 +10,25 @@ import static org.junit.Assert.*;
  */
 public class ConfigTest {
 
+    CsvConfigurationImpl config = new CsvConfigurationImpl("src/main/resources/config.xml");
+
     @Test
     public void testSeparator() {
-        FileCsvConfiguration csv = new FileCsvConfiguration("src/main/resources/config.xml");
-        csv.loadConfiguration();
-        assertEquals(csv.getSeparator(), ",");
+        assertEquals(config.getSeparator(), ",");
     }
 
     @Test
     public void testCsvEntityFromFileCsvConfiguration() {
-        CsvConfiguration config = new FileCsvConfiguration("src/main/resources/config.xml");
-        config.loadConfiguration();
-        System.out.println(((FileCsvConfiguration) config).getEntities().toString());
+        System.out.println(config.getEntities().toString());
     }
 
+    @Test
+    public void testStudentsFromXmlConfiguration() {
+       /* List<Student> students = new ArrayList();
+        IParser parser = new CsvParser(config);
+        students = (List<Student>) parser.loadEntities(Student.class);
+        System.out.println(students);*/
+        IParser parser = new CsvParser(config);
+        parser.loadEntities(Student.class);
+    }
 }

@@ -1,35 +1,40 @@
 package com.github.yuriy27.csvparser;
 
 import com.github.yuriy27.csvparser.config.CsvConfiguration;
+import com.github.yuriy27.csvparser.config.CsvConfigurationImpl;
+import com.github.yuriy27.csvparser.entity.CsvEntity;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Юра on 02.11.2016.
  */
-public class CsvParser {
+public class CsvParser implements IParser {
 
-    private String path;
-    private String separator = ",";
+    //private String path;
+    //private String separator = ",";
 
-    public CsvParser() {
-        path = "/";
+    private CsvConfigurationImpl config;
+
+    public CsvConfigurationImpl getConfig() {
+        return config;
     }
 
-    public CsvParser(String path) {
-        this.path = path;
+    public void setConfig(CsvConfigurationImpl config) {
+        this.config = config;
     }
 
-    public CsvParser(String path, String separator) {
-        this.path = path;
-        this.separator = separator;
+    public CsvParser(CsvConfigurationImpl config) {
+        this.config = config;
     }
 
-    public List<Student> parse() {
+
+  /*  public List<Student> parse() {
         List<Student> result = new ArrayList<>();
         try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
@@ -47,12 +52,46 @@ public class CsvParser {
         }
 
         return result;
-    }
+    }*/
 
-    public List<Object> loadEntities(Class<?> clazz) {
+    @Override
+    public List<? extends Object> loadEntities(Class<?> clazz) {
+        List<? extends Object> result = new ArrayList<>();
 
 
         return null;
+    }
+
+    private Object getEntity(String[] data, Class<?> clazz) {
+        CsvEntity entity = config.getEntities().get(clazz.getName());
+        //  System.out.println("______________");
+        //  System.out.println(entity);
+        //  System.out.println("______________");
+        Object obj = null;
+        try {
+            obj = clazz.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        // System.out.println("______________");
+        //System.out.println(obj);
+        String[] type = entity.getType();
+        String[] fields = entity.getFields();
+        int[] num = entity.getNum();
+        for (int i = 0; i < fields.length; i++) {
+            Field field = null;
+            try {
+                field = clazz.getDeclaredField(fields[i]);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+            field.setAccessible(true);
+          //  field.set();
+        }
+
+        return obj;
     }
 
 }

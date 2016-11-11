@@ -5,6 +5,8 @@ package com.github.yuriy27.csvparser.config;
  */
 public interface CsvConfiguration {
 
-    public void loadConfiguration();
+     void loadConfiguration();
+
+     void loadFromAnnotations();
 
 }
