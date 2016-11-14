@@ -1,7 +1,9 @@
 package com.github.yuriy27.csvparser;
 
-import com.github.yuriy27.csvparser.config.CsvConfigurationImpl;
+import com.github.yuriy27.csvparser.config.CsvConfiguration;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +12,7 @@ import static org.junit.Assert.*;
  */
 public class ConfigTest {
 
-    CsvConfigurationImpl config = new CsvConfigurationImpl("src/main/resources/config.xml");
+    CsvConfiguration config = new CsvConfiguration("src/main/resources/config.xml");
 
     @Test
     public void testSeparator() {
@@ -24,11 +26,8 @@ public class ConfigTest {
 
     @Test
     public void testStudentsFromXmlConfiguration() {
-       /* List<Student> students = new ArrayList();
-        IParser parser = new CsvParser(config);
-        students = (List<Student>) parser.loadEntities(Student.class);
-        System.out.println(students);*/
-        IParser parser = new CsvParser(config);
-        parser.loadEntities(Student.class);
+        CsvParser parser = new CsvParser(config);
+        List<Student> st = (List<Student>)(Object)parser.loadEntities(Student.class);
+        System.out.println(st);
     }
 }

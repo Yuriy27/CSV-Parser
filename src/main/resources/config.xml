@@ -2,7 +2,7 @@
     <meta>
         <separator>,</separator>
     </meta>
-    <entity class="com.github.yuriy27.csvparser.Student" resource="test.csv">
+    <entity class="com.github.yuriy27.csvparser.Student" resource="src/main/resources/test.csv">
         <col num="1" type="java.lang.String">name</col>
         <col num="2" type="java.lang.String">surname</col>
         <col num="3" type="java.lang.String">city</col>

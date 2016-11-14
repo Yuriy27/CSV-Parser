@@ -1,8 +1,8 @@
 package com.github.yuriy27.csvparser;
 
 import com.github.yuriy27.csvparser.config.CsvConfiguration;
-import com.github.yuriy27.csvparser.config.CsvConfigurationImpl;
 import com.github.yuriy27.csvparser.entity.CsvEntity;
+import com.github.yuriy27.csvparser.exception.NotSupportedTypeException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,29 +14,30 @@ import java.util.List;
 /**
  * Created by Юра on 02.11.2016.
  */
-public class CsvParser implements IParser {
+public class CsvParser {
 
     //private String path;
     //private String separator = ",";
 
-    private CsvConfigurationImpl config;
+    private CsvConfiguration config;
 
-    public CsvConfigurationImpl getConfig() {
+    public CsvConfiguration getConfig() {
         return config;
     }
 
-    public void setConfig(CsvConfigurationImpl config) {
+    public void setConfig(CsvConfiguration config) {
         this.config = config;
     }
 
-    public CsvParser(CsvConfigurationImpl config) {
+    public CsvParser(CsvConfiguration config) {
         this.config = config;
     }
 
-
-  /*  public List<Student> parse() {
-        List<Student> result = new ArrayList<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
+    public List<Object> loadEntities(Class<?> clazz) {
+        List<Object> result = new ArrayList<>();
+        String separator = config.getSeparator();
+        try(BufferedReader reader = new BufferedReader(new FileReader(config.getEntities()
+                .get(clazz.getName()).getResource()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
@@ -44,39 +45,23 @@ public class CsvParser implements IParser {
                 for (int i = 0; i < data.length; i++) {
                     data[i] = data[i].trim();
                 }
-                Student student = new Student(data[0], data[1], data[2]);
-                result.add(student);
+                result.add(getEntity(data, clazz));
             }
         } catch(IOException e) {
             e.printStackTrace();
         }
 
         return result;
-    }*/
-
-    @Override
-    public List<? extends Object> loadEntities(Class<?> clazz) {
-        List<? extends Object> result = new ArrayList<>();
-
-
-        return null;
     }
 
     private Object getEntity(String[] data, Class<?> clazz) {
         CsvEntity entity = config.getEntities().get(clazz.getName());
-        //  System.out.println("______________");
-        //  System.out.println(entity);
-        //  System.out.println("______________");
         Object obj = null;
         try {
             obj = clazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        // System.out.println("______________");
-        //System.out.println(obj);
         String[] type = entity.getType();
         String[] fields = entity.getFields();
         int[] num = entity.getNum();
@@ -88,7 +73,35 @@ public class CsvParser implements IParser {
                 e.printStackTrace();
             }
             field.setAccessible(true);
-          //  field.set();
+            try {
+                //PROBLEMS HERE
+                field.set(obj, data[num[i] - 1]);
+                //getValue(type[i], data[num[i] - 1]);
+            } catch (IllegalAccessException /*| ClassNotFoundException | InstantiationException | NotSupportedTypeException*/ e) {
+                e.printStackTrace();
+            }
+        }
+
+        return obj;
+    }
+
+    private Object getValue(Object o, String type, String data) throws ClassNotFoundException,
+            IllegalAccessException,
+            InstantiationException,
+            NotSupportedTypeException {
+        Object obj = Class.forName(type).newInstance();
+        switch (type) {
+            case "java.lang.Byte" : obj = Byte.parseByte(data); break;
+            case "java.lang.Short" : obj = Short.parseShort(data); break;
+            case "java.lang.Integer" : obj = Integer.parseInt(data); break;
+            case "java.lang.Long" : obj = Long.parseLong(data); break;
+            case "java.lang.Float" : obj = Float.parseFloat(data); break;
+            case "java.lang.Double" : obj = Double.parseDouble(data); break;
+            case "java.lang.Character" : obj = new Character(data.charAt(0)) ; break;
+            case "java.lang.Boolean" : obj = Boolean.parseBoolean(data) ; break;
+            case "java.lang.String" : obj = data ; break;
+            default: throw new NotSupportedTypeException("CsvParser doesn't support '"
+                    + type +"' type");
         }
 
         return obj;
