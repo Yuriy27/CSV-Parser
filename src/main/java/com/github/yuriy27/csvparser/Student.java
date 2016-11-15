@@ -7,12 +7,12 @@ public class Student {
 
     private String name;
     private String surname;
-    private String city;
+    private boolean city;
 
     public Student() {
     }
 
-    public Student(String name, String surname, String city) {
+    public Student(String name, String surname, boolean city) {
         this.name = name;
         this.surname = surname;
         this.city = city;
@@ -34,11 +34,11 @@ public class Student {
         this.surname = surname;
     }
 
-    public String getCity() {
+    public boolean getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(boolean city) {
         this.city = city;
     }
 
@@ -58,9 +58,9 @@ public class Student {
 
         Student student = (Student) o;
 
+        if (city != student.city) return false;
         if (name != null ? !name.equals(student.name) : student.name != null) return false;
-        if (surname != null ? !surname.equals(student.surname) : student.surname != null) return false;
-        return city != null ? city.equals(student.city) : student.city == null;
+        return surname != null ? surname.equals(student.surname) : student.surname == null;
 
     }
 
@@ -68,7 +68,7 @@ public class Student {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (city ? 1 : 0);
         return result;
     }
 }

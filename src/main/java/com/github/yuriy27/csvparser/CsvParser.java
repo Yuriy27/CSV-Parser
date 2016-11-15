@@ -75,9 +75,10 @@ public class CsvParser {
             field.setAccessible(true);
             try {
                 //PROBLEMS HERE
-                field.set(obj, data[num[i] - 1]);
-                //getValue(type[i], data[num[i] - 1]);
-            } catch (IllegalAccessException /*| ClassNotFoundException | InstantiationException | NotSupportedTypeException*/ e) {
+               // field.set(obj, data[num[i] - 1]);
+                setField(obj, field, type[i], data[num[i] - 1]);
+
+            } catch (IllegalAccessException | ClassNotFoundException | InstantiationException | NotSupportedTypeException e) {
                 e.printStackTrace();
             }
         }
@@ -85,21 +86,20 @@ public class CsvParser {
         return obj;
     }
 
-    private Object getValue(Object o, String type, String data) throws ClassNotFoundException,
+    private Object setField(Object obj, Field field, String type, String data) throws ClassNotFoundException,
             IllegalAccessException,
             InstantiationException,
             NotSupportedTypeException {
-        Object obj = Class.forName(type).newInstance();
         switch (type) {
-            case "java.lang.Byte" : obj = Byte.parseByte(data); break;
-            case "java.lang.Short" : obj = Short.parseShort(data); break;
-            case "java.lang.Integer" : obj = Integer.parseInt(data); break;
-            case "java.lang.Long" : obj = Long.parseLong(data); break;
-            case "java.lang.Float" : obj = Float.parseFloat(data); break;
-            case "java.lang.Double" : obj = Double.parseDouble(data); break;
-            case "java.lang.Character" : obj = new Character(data.charAt(0)) ; break;
-            case "java.lang.Boolean" : obj = Boolean.parseBoolean(data) ; break;
-            case "java.lang.String" : obj = data ; break;
+            case "java.lang.Byte" : field.setByte(obj, Byte.parseByte(data)); break;
+            case "java.lang.Short" : field.setShort(obj, Short.parseShort(data)); break;
+            case "java.lang.Integer" : field.setInt(obj, Integer.parseInt(data)); break;
+            case "java.lang.Long" : field.setLong(obj, Long.parseLong(data)); break;
+            case "java.lang.Float" : field.setFloat(obj, Float.parseFloat(data)); break;
+            case "java.lang.Double" : field.setDouble(obj, Double.parseDouble(data)); break;
+            case "java.lang.Character" : field.setChar(obj, data.charAt(0)); break;
+            case "java.lang.Boolean" : field.setBoolean(obj, Boolean.parseBoolean(data)); break;
+            case "java.lang.String" : field.set(obj, data); break;
             default: throw new NotSupportedTypeException("CsvParser doesn't support '"
                     + type +"' type");
         }
