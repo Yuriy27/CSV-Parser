@@ -1,7 +1,8 @@
 package com.github.yuriy27.csvparser;
 
+import com.github.yuriy27.csvparser.annot.CsvEntity;
 import com.github.yuriy27.csvparser.config.CsvConfiguration;
-import com.github.yuriy27.csvparser.entity.CsvEntity;
+import com.github.yuriy27.csvparser.entity.CsvModel;
 import com.github.yuriy27.csvparser.exception.NotSupportedTypeException;
 
 import java.io.BufferedReader;
@@ -11,13 +12,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Юра on 02.11.2016.
- */
 public class CsvParser {
-
-    //private String path;
-    //private String separator = ",";
 
     private CsvConfiguration config;
 
@@ -33,29 +28,18 @@ public class CsvParser {
         this.config = config;
     }
 
-    public List<Object> loadEntities(Class<?> clazz) {
-        List<Object> result = new ArrayList<>();
-        String separator = config.getSeparator();
-        try(BufferedReader reader = new BufferedReader(new FileReader(config.getEntities()
-                .get(clazz.getName()).getResource()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                String[] data = line.split(separator);
-                for (int i = 0; i < data.length; i++) {
-                    data[i] = data[i].trim();
-                }
-                result.add(getEntity(data, clazz));
-            }
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+    public List<Object> loadEntities(final Class<?> clazz) {
+        final List<Object> result = new ArrayList<>();
+        DataLoader dataLoader = new CsvDataLoader();
+        List<List<String>> data = dataLoader.load(config.getCsvEntities()
+                .get(clazz.getName()).getResource());
+        data.forEach(elem-> result.add(getEntity(elem, clazz)));
 
         return result;
     }
 
-    private Object getEntity(String[] data, Class<?> clazz) {
-        CsvEntity entity = config.getEntities().get(clazz.getName());
+    private Object getEntity(List<String> data, Class<?> clazz) {
+        CsvModel entity = config.getCsvEntities().get(clazz.getName());
         Object obj = null;
         try {
             obj = clazz.newInstance();
@@ -74,10 +58,7 @@ public class CsvParser {
             }
             field.setAccessible(true);
             try {
-                //PROBLEMS HERE
-               // field.set(obj, data[num[i] - 1]);
-                setField(obj, field, type[i], data[num[i] - 1]);
-
+                setField(obj, field, type[i], data.get(num[i] - 1));
             } catch (IllegalAccessException | ClassNotFoundException | InstantiationException | NotSupportedTypeException e) {
                 e.printStackTrace();
             }

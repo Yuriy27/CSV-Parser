@@ -1,12 +1,18 @@
 package com.github.yuriy27.csvparser;
 
-/**
- * Created by Юра on 02.11.2016.
- */
+import com.github.yuriy27.csvparser.annot.Column;
+import com.github.yuriy27.csvparser.annot.CsvEntity;
+
+@CsvEntity(resource = "src/main/resources/test.csv")
 public class Student {
 
+    @Column(num = 1)
     private String name;
+
+    @Column(num = 2)
     private String surname;
+
+    @Column(num = 3)
     private boolean city;
 
     public Student() {

@@ -2,10 +2,7 @@ package com.github.yuriy27.csvparser.entity;
 
 import java.util.Arrays;
 
-/**
- * Created by Юра on 07.11.2016.
- */
-public class CsvEntity {
+public class CsvModel {
 
     private String eclass;
     private String resource;
@@ -13,10 +10,10 @@ public class CsvEntity {
     private String[] fields;
     private int[] num;
 
-    public CsvEntity() {
+    public CsvModel() {
     }
 
-    public CsvEntity(String eclass, String resource, String[] type, String[] fields, int[] num) {
+    public CsvModel(String eclass, String resource, String[] type, String[] fields, int[] num) {
         this.eclass = eclass;
         this.resource = resource;
         this.type = type;
@@ -66,7 +63,7 @@ public class CsvEntity {
 
     @Override
     public String toString() {
-        return "CsvEntity{" +
+        return "CsvModel{" +
                 "eclass='" + eclass + '\'' +
                 ", resource='" + resource + '\'' +
                 ", type=" + Arrays.toString(type) +
