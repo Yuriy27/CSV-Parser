@@ -75,9 +75,10 @@ public class CsvConfigurationLoader {
         return result;
     }
 
-    public static CsvConfiguration loadFromAnnotations(Class<?> clazz)
+    public static CsvConfiguration loadFromAnnotations(Class<? extends Object> clazz)
             throws MissedAnnotationException {
         CsvConfiguration result = new CsvConfiguration();
+        result.setDefaultClass(clazz);
         CsvModel model = new CsvModel();
         String[] fields, type;
         int[] num;
@@ -94,7 +95,7 @@ public class CsvConfigurationLoader {
             int ind = 0;
             for (Field field : declaredFields) {
                 fields[ind] = field.getName();
-                type[ind] = field.getType().getCanonicalName();
+                type[ind] = field.getType().getSimpleName();
                 Column column = field.getAnnotation(Column.class);
                 num[ind] = column.num();
                 ind++;

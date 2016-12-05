@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class CsvConfiguration {
 
+    private Class<? extends Object> defaultClass = null;
+
     private Map<String, CsvModel> csvEntities;
 
     public Map<String, CsvModel> getCsvEntities() {
@@ -16,4 +18,11 @@ public class CsvConfiguration {
         this.csvEntities = csvEntities;
     }
 
+    public Class<? extends Object> getDefaultClass() {
+        return defaultClass;
+    }
+
+    public void setDefaultClass(Class<? extends Object> defaultClass) {
+        this.defaultClass = defaultClass;
+    }
 }

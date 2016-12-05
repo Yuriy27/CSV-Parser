@@ -1,4 +1,4 @@
-package com.github.yuriy27.csvparser;
+package com.github.yuriy27.csvparser.csv;
 
 import java.util.List;
 

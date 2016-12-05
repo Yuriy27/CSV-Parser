@@ -1,4 +1,4 @@
-package com.github.yuriy27.csvparser;
+package com.github.yuriy27.csvparser.csv;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Юра on 30.11.2016.
- */
 public class CsvDataLoader implements DataLoader {
 
     private List<List<String>> csvFile;

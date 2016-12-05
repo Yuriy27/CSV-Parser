@@ -1,13 +1,9 @@
-package com.github.yuriy27.csvparser;
+package com.github.yuriy27.csvparser.csv;
 
-import com.github.yuriy27.csvparser.annot.CsvEntity;
 import com.github.yuriy27.csvparser.config.CsvConfiguration;
 import com.github.yuriy27.csvparser.entity.CsvModel;
 import com.github.yuriy27.csvparser.exception.NotSupportedTypeException;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +24,11 @@ public class CsvParser {
         this.config = config;
     }
 
-    public List<Object> loadEntities(final Class<?> clazz) {
+    public List<Object> loadEntities() {
+        return config.getDefaultClass() == null ? null : loadEntities(config.getDefaultClass());
+    }
+
+    public List<Object> loadEntities(final Class<? extends Object> clazz) {
         final List<Object> result = new ArrayList<>();
         DataLoader dataLoader = new CsvDataLoader();
         List<List<String>> data = dataLoader.load(config.getCsvEntities()
@@ -38,7 +38,7 @@ public class CsvParser {
         return result;
     }
 
-    private Object getEntity(List<String> data, Class<?> clazz) {
+    private Object getEntity(List<String> data, Class<? extends Object> clazz) {
         CsvModel entity = config.getCsvEntities().get(clazz.getName());
         Object obj = null;
         try {
@@ -72,15 +72,15 @@ public class CsvParser {
             InstantiationException,
             NotSupportedTypeException {
         switch (type) {
-            case "java.lang.Byte" : field.setByte(obj, Byte.parseByte(data)); break;
-            case "java.lang.Short" : field.setShort(obj, Short.parseShort(data)); break;
-            case "java.lang.Integer" : field.setInt(obj, Integer.parseInt(data)); break;
-            case "java.lang.Long" : field.setLong(obj, Long.parseLong(data)); break;
-            case "java.lang.Float" : field.setFloat(obj, Float.parseFloat(data)); break;
-            case "java.lang.Double" : field.setDouble(obj, Double.parseDouble(data)); break;
-            case "java.lang.Character" : field.setChar(obj, data.charAt(0)); break;
-            case "java.lang.Boolean" : field.setBoolean(obj, Boolean.parseBoolean(data)); break;
-            case "java.lang.String" : field.set(obj, data); break;
+            case "byte" : field.setByte(obj, Byte.parseByte(data)); break;
+            case "short" : field.setShort(obj, Short.parseShort(data)); break;
+            case "int" : field.setInt(obj, Integer.parseInt(data)); break;
+            case "long" : field.setLong(obj, Long.parseLong(data)); break;
+            case "float" : field.setFloat(obj, Float.parseFloat(data)); break;
+            case "double" : field.setDouble(obj, Double.parseDouble(data)); break;
+            case "char" : field.setChar(obj, data.charAt(0)); break;
+            case "boolean" : field.setBoolean(obj, Boolean.parseBoolean(data)); break;
+            case "String" : field.set(obj, data); break;
             default: throw new NotSupportedTypeException("CsvParser doesn't support '"
                     + type +"' type");
         }

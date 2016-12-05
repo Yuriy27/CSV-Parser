@@ -1,4 +1,4 @@
-package com.github.yuriy27.csvparser;
+package com.github.yuriy27.csvparser.ex;
 
 import com.github.yuriy27.csvparser.annot.Column;
 import com.github.yuriy27.csvparser.annot.CsvEntity;

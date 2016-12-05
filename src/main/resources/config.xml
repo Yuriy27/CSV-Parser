@@ -1,7 +1,7 @@
 <csv-configuration>
-    <entity class="com.github.yuriy27.csvparser.Student" resource="src/main/resources/test.csv">
-        <col num="1" type="java.lang.String">name</col>
-        <col num="2" type="java.lang.String">surname</col>
-        <col num="3" type="java.lang.Boolean">city</col>
+    <entity class="com.github.yuriy27.csvparser.ex.Student" resource="src/main/resources/test.csv">
+        <col num="1" type="String">name</col>
+        <col num="2" type="String">surname</col>
+        <col num="3" type="boolean">city</col>
     </entity>
 </csv-configuration>
